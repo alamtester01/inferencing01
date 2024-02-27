@@ -18,7 +18,7 @@
             {% if image_data %}
                 <img src="data:image/jpeg;base64,{{ image_data }}" alt="Image">
             {% elif video_path %}
-            <video width="640" height="480" controls>
+            <video width="640" height="480" controls autoplay>
                 <source src="{% url 'serve_video' 'file.avi' %}" type="video/mp4">
                 Your browser does not support the video tag.
             </video>

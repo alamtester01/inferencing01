@@ -75,13 +75,14 @@ import pathlib
 from .forms import FileForm
 from moviepy.editor import VideoFileClip
 import logging
+from django.views.decorators.csrf import csrf_exempt
 
 # Set up logging
 logger = logging.getLogger(__name__)
 
 MODULE_DIR = pathlib.Path(__file__).resolve().parent
 # model = YOLO(f'./yolov8n.pt')
-
+@csrf_exempt
 def index(request):
     if request.method == 'POST':
         form = FileForm(request.POST, request.FILES)
@@ -116,7 +117,7 @@ def index(request):
                     # print("runs_dir", runs_dir)
                     # detect_dir = MODULE_DIR / 'runs' / 'detect'
                     # predict_dir = detect_dir / 'predict'
-                    predict_dir = MODULE_DIR.parent.parent / 'Inferencing' / 'alam-backend-beta' / 'runs' / 'detect' / 'predict' # palitan mo na lang kun anung dir nag save iyong prediction mo
+                    predict_dir = MODULE_DIR.parent.parent / 'inferencing' / 'alam-backend-beta' / 'runs' / 'detect' / 'predict' # palitan mo na lang kun anung dir nag save iyong prediction mo
                     output_path = predict_dir / 'file.jpeg'
 
                     with output_path.open('rb') as f:
@@ -147,7 +148,7 @@ def index(request):
     return render(request, 'inferencing/index.html', context={'form': form})
 
 def serve_video(request, filename):
-    base_dir = r'C:\Users\default.LAPTOP-DNGC313G\Documents\ALam\Inferencing\alam-backend-beta\runs\detect\predict' # palitan mo na lang kun anung dir nag save iyong prediction mo
+    base_dir = r'\home\admin1\shared\SEU\inferencing\alam-backend-beta\runs\detect\predict' # palitan mo na lang kun anung dir nag save iyong prediction mo
     avi_path = os.path.join(base_dir, filename)
     mp4_path = os.path.join(base_dir, 'file.mp4')
     print("settings.BASE_DIR", settings.BASE_DIR)

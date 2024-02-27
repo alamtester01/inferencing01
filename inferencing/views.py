@@ -117,7 +117,7 @@ def index(request):
                     # print("runs_dir", runs_dir)
                     # detect_dir = MODULE_DIR / 'runs' / 'detect'
                     # predict_dir = detect_dir / 'predict'
-                    predict_dir = MODULE_DIR.parent.parent / 'inferencing' / 'alam-backend-beta' / 'runs' / 'detect' / 'predict' # palitan mo na lang kun anung dir nag save iyong prediction mo
+                    predict_dir = MODULE_DIR.parent.parent / 'alam-backend-beta' / 'runs' / 'detect' / 'predict' # palitan mo na lang kun anung dir nag save iyong prediction mo
                     output_path = predict_dir / 'file.jpeg'
                     print('predict_dir', predict_dir)
                     with output_path.open('rb') as f:

@@ -66,6 +66,7 @@
 #     })
 
 import base64
+import shutil
 from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse, FileResponse
@@ -102,6 +103,11 @@ def index(request):
             # Save the model weights file to disk
             with open(MODULE_DIR / 'model_weights.pt', 'wb') as model_file:
                 model_file.write(model_weights.read())
+
+            base_dir = r'/home/admin1/shared/SEU/inferencing/alam-backend-beta/runs/detect/predict'
+
+            if os.path.exists:
+                shutil.rmtree(base_dir)
 
             try:
                 # Load the YOLO model with the provided weights

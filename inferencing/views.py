@@ -148,7 +148,7 @@ def index(request):
     return render(request, 'inferencing/index.html', context={'form': form})
 
 def serve_video(request, filename):
-    base_dir = r'\home\admin1\shared\SEU\inferencing\alam-backend-beta\runs\detect\predict' # palitan mo na lang kun anung dir nag save iyong prediction mo
+    base_dir = r'/home/admin1/shared/SEU/inferencing/alam-backend-beta/runs/detect/predict' # palitan mo na lang kun anung dir nag save iyong prediction mo
     avi_path = os.path.join(base_dir, filename)
     mp4_path = os.path.join(base_dir, 'file.mp4')
     print("settings.BASE_DIR", settings.BASE_DIR)

@@ -106,8 +106,9 @@ def index(request):
 
             base_dir = r'/home/admin1/shared/SEU/inferencing/alam-backend-beta/runs/detect/predict'
 
-            if os.path.exists:
+            if os.path.exists(base_dir):
                 shutil.rmtree(base_dir)
+            
 
             try:
                 # Load the YOLO model with the provided weights

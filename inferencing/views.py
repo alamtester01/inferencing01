@@ -120,12 +120,8 @@ def index(request):
                     return render(request, 'inferencing/index.html', context={'video_path': video_path})
                 else:
                     model.predict(source=str(input_file_path), conf=0.25, save=True)
-                    # runs_dir = pathlib.Path('runs').resolve()
-                    # print("runs_dir", runs_dir)
-                    # detect_dir = MODULE_DIR / 'runs' / 'detect'
-                    # predict_dir = detect_dir / 'predict'
                     predict_dir = MODULE_DIR.parent.parent / 'alam-backend-beta' / 'runs' / 'detect' / 'predict' # palitan mo na lang kun anung dir nag save iyong prediction mo
-                    output_path = predict_dir / 'file.jpeg'
+                    output_path = predict_dir / f'file.{input_file_extension}'
                     print('predict_dir', predict_dir)
                     with output_path.open('rb') as f:
                         img_str = base64.b64encode(f.read()).decode()

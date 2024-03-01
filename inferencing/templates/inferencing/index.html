@@ -9,11 +9,12 @@
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
             margin: 0;
-            padding: 20px;
+            /* padding: 20px; */
         }
  
         .container {
-            max-width: 800px;
+            max-width: 100%;
+            /* width: 100%; */
             margin: 0 auto;
             background-color: #fff;
             padding: 20px;
@@ -61,7 +62,7 @@
         img {
             max-width: 100%;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            /* box-shadow: 0 2px 5px rgba(0,0,0,0.1); */
         }
  
         video {
@@ -76,11 +77,31 @@
             text-align: center;
         }
 
-        .flex{
-            display: flex;
-            justify-content: space-between;
+        .center{
+            
+            width: 100%;
+        }
+        /* .tbody{
+            width: 100%;
+        }  */
+        .loaddiv{
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin-top: 2.5%;
+
+        }
+        .loadicon{
+            width: 10%;
         }
     </style>
+    <script>
+        function startProcess(){
+            var x = document.getElementById("loaddivid")
+            x.style.display = "flex";
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -88,41 +109,54 @@
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Process</button>
+            
+            <button type="submit", onclick="startProcess()">Process</button>
+
         </form>
-        <div class="flex">
- 
-            <div class="image-container">
-                {% if input_file %}
-                    <h2>Uploaded Image:</h2>
-                    <img src="data:image/jpeg;base64,{{ input_file }}" alt="Uploaded Image">
-                {% endif %}
-
-                {% if video_raw %}
-                    <h2>Uploaded Video:</h2>
-                    <video width="640" height="480" controls autoplay>
-                            <source src="{{ video_raw }}" type="video/mp4">
-                            Your browser does not support the video tag.
-                    </video>
-                {% endif %}
+        {% if video_path == none %}
+            <div class="loaddiv", id="loaddivid">
+                <img class="loadicon" src="XOsX.gif" alt="loading">
+                <p>Walking on V100</p>
+            </div>
+        {% endif %}
+        <table class = "center">
+            <!-- <tbody class="center"> -->
+            <tr>
+                <td class="image-container">
+                    {% if input_file %}
+                        <h2>Uploaded Image:</h2>
+                        <img src="data:image/jpeg;base64,{{ input_file }}" alt="Uploaded Image">
+                    {% endif %}
     
-            </div>
+                    {% if video_raw %}
+                        <h2>Uploaded Video:</h2>
+                        <video width="640" height="480" controls autoplay>
+                                <source src="{{ video_raw }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                        </video>
+                    {% endif %}
+        
+                </td>
+    
+                <td class="image-container">
+                    {% if image_data %}
+                        <h2>Processed Image:</h2>
+                        <img src="data:image/jpeg;base64,{{ image_data }}" alt="Processed Image">
+                    {% endif %}
+    
+                    {% if video_path %}
+                        <h2>Processed Video:</h2>
+                        <video width="640" height="480" controls autoplay>
+                            <source src="{% url 'serve_video' 'file.avi' %}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% endif %}
+                </td>
 
-            <div class="image-container">
-                {% if image_data %}
-                    <h2>Processed Image:</h2>
-                    <img src="data:image/jpeg;base64,{{ image_data }}" alt="Processed Image">
-                {% endif %}
-
-                {% if video_path %}
-                    <h2>Processed Video:</h2>
-                    <video width="640" height="480" controls autoplay>
-                        <source src="{% url 'serve_video' 'file.avi' %}" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                {% endif %}
-            </div>
-        </div>
+            </tr>
+            <!-- </tbody> -->
+            
+        </table>
             
 
         

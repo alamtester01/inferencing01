@@ -75,6 +75,11 @@
             font-size: 16px;
             text-align: center;
         }
+
+        .flex{
+            display: flex;
+            justify-content: space-between;
+        }
     </style>
 </head>
 <body>
@@ -85,35 +90,42 @@
             {{ form.as_p }}
             <button type="submit">Submit</button>
         </form>
+        <div class="flex">
  
-        <div class="image-container">
-            {% if input_file %}
-                <h2>Uploaded Image:</h2>
-                <img src="data:image/jpeg;base64,{{ input_file }}" alt="Uploaded Image">
-            {% endif %}
-            {% if image_data %}
-                <h2>Processed Image:</h2>
-                <img src="data:image/jpeg;base64,{{ image_data }}" alt="Processed Image">
-            {% endif %}
+            <div class="image-container">
+                {% if input_file %}
+                    <h2>Uploaded Image:</h2>
+                    <img src="data:image/jpeg;base64,{{ input_file }}" alt="Uploaded Image">
+                {% endif %}
 
-            {% if video_raw %}
-                <h2>Uploaded Video:</h2>
-                <video width="640" height="480" controls autoplay>
-                        <source src="{{ video_raw }}" type="video/mp4">
+                {% if video_raw %}
+                    <h2>Uploaded Video:</h2>
+                    <video width="640" height="480" controls autoplay>
+                            <source src="{{ video_raw }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                    </video>
+                {% endif %}
+    
+            </div>
+
+            <div class="image-container">
+                {% if image_data %}
+                    <h2>Processed Image:</h2>
+                    <img src="data:image/jpeg;base64,{{ image_data }}" alt="Processed Image">
+                {% endif %}
+
+                {% if video_path %}
+                    <h2>Processed Video:</h2>
+                    <video width="640" height="480" controls autoplay>
+                        <source src="{% url 'serve_video' 'file.avi' %}" type="video/mp4">
                         Your browser does not support the video tag.
-                </video>
-            {% endif %}
-            
-            {% if video_path %}
-                <h2>Processed Video:</h2>
-                <video width="640" height="480" controls autoplay>
-                    <source src="{% url 'serve_video' 'file.avi' %}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            {% endif %}
+                    </video>
+                {% endif %}
+            </div>
+        </div>
             
 
-        </div>
+        
     </div>
 </body>
 

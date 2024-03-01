@@ -117,25 +117,34 @@ def index(request):
                 if input_file_extension in ['mp4', 'avi', 'mov']:
                     model.predict(source=str(input_file_path), conf=0.25, save=True)
                     video_path = str(input_file_path.parent / 'output.mp4')
-                    return render(request, 'inferencing/index.html', context={'video_path': video_path})
+                    video_raw = str(input_file_path.parent / 'file.mp4')
+                    print("video_raw",video_raw)
+                    return render(request, 'inferencing/index.html', context={'video_path': video_path, 'video_raw': video_raw})
                 else:
+                    input_file = request.FILES['file']
                     model.predict(source=str(input_file_path), conf=0.25, save=True)
+                    print("input_file_path", input_file_path)
                     predict_dir = MODULE_DIR.parent.parent / 'alam-backend-beta' / 'runs' / 'detect' / 'predict' # palitan mo na lang kun anung dir nag save iyong prediction mo
+                    # predict_dir = MODULE_DIR.parent.parent /'Inferencing'/ 'alam-backend-beta' / 'runs' / 'detect' / 'predict'
                     output_path = predict_dir / f'file.{input_file_extension}'
                     print('predict_dir', predict_dir)
                     with output_path.open('rb') as f:
                         img_str = base64.b64encode(f.read()).decode()
                         
-                    # order matters (directories can only be deleted when empty)
+                    # # order matters (directories can only be deleted when empty)
                     for path in [output_path, predict_dir]:
                         if path.is_dir():
                             os.rmdir(path)
                         else:
                             os.remove(path)
+
+                    with input_file_path.open('rb') as f:
+                        img_file = base64.b64encode(f.read()).decode()
     
                     return render(request, 'inferencing/index.html', context= {
                         'form': FileForm(),
-                        'image_data': img_str
+                        'image_data': img_str,
+                        'input_file': img_file,
                     })
                     
             except FileNotFoundError:
@@ -152,6 +161,7 @@ def index(request):
 
 def serve_video(request, filename):
     base_dir = r'/home/admin1/shared/SEU/inferencing/alam-backend-beta/runs/detect/predict' # palitan mo na lang kun anung dir nag save iyong prediction mo
+    # base_dir = r'C:\Users\default.LAPTOP-DNGC313G\Documents\ALam\Inferencing\alam-backend-beta\runs\detect\predict'
     avi_path = os.path.join(base_dir, filename)
     mp4_path = os.path.join(base_dir, 'file.mp4')
     print("settings.BASE_DIR", settings.BASE_DIR)
@@ -168,6 +178,23 @@ def serve_video(request, filename):
         with open(mp4_path, 'rb') as f:
             response = HttpResponse(f.read(), content_type='video/mp4')
         return response
+        
+    # # Check if MP4 file exists
+    # if os.path.exists(mp4_path):
+    #     # Serve the video file
+    #     with open(mp4_path, 'rb') as f:
+    #         video_data = f.read()
+
+    #     # Prepare the context data for rendering the template
+    #     context = {
+    #         'form': FileForm(),  # Assuming you have a form named FileForm
+    #         'image_data': None,  # Placeholder for image data
+    #         'input_file': None,  # Placeholder for input file
+    #         'video_data': video_data  # Pass the video data to render in template
+    #     }
+    #     # Render the HTML template
+    #     return render(request, 'inferencing/index.html', context)
+
     else:
         # Return 404 if the file does not exist
         return HttpResponse('File not found', status=404)
